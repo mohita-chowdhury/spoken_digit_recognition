@@ -20,7 +20,7 @@ from test import test
 from dataloader import speechDataset
 
 
-PATH = '/scratch/shared/nfs1/mohita/ufonia/speech_rec_pytorch/saved/models/speech_net.pth'
+PATH = '/scratch/shared/nfs1/mohita/ufonia/speech_rec_pytorch/saved/models/speech_net_aug.pth.tar'
 device = torch.device("cuda")
 
 seed=10
@@ -60,10 +60,10 @@ params = {'batch_size': 1,
           'shuffle': True,
           'num_workers': 6}
 
-with open('data/partition.json') as json_file:
+with open('data/partition_aug.json') as json_file:
     partition = json.load(json_file)
 
-with open('data/labels.json') as json_file:
+with open('data/labels_aug.json') as json_file:
     labels = json.load(json_file)
 
 train_IDs = partition['train']
@@ -77,9 +77,10 @@ test_generator = torch.utils.data.DataLoader(test_set, **params)
 
 
 speech_model = model.SpeechConv()
-optimizer = optim.SGD(speech_model.parameters(), lr=0.001, momentum=0.9)
+speech_model.to(device)
+optimizer = optim.Adam(speech_model.parameters(), lr=0.0001)
 
-train(training_generator, number_of_epochs, batch_size, speech_model, optimizer)
-# speech_model.load_state_dict(torch.load(PATH))
+# train(training_generator, number_of_epochs, batch_size, speech_model, optimizer)
+speech_model.load_state_dict(torch.load(PATH))
 test(test_generator, speech_model)
 

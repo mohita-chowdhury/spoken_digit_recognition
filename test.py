@@ -1,7 +1,8 @@
 import torch
 import model
 
-PATH = '/scratch/shared/nfs1/mohita/ufonia/speech_rec_pytorch/saved/models/speech_net.pth'
+
+device = torch.device("cuda")
 
 def test(test_gen, model):
 	# dataiter = iter(test_gen)
@@ -23,11 +24,13 @@ def test(test_gen, model):
 	with torch.no_grad():
 	    for data in test_gen:
 	        images, labels = data
+	        images, labels = images.to(device), labels.to(device)
 	        outputs = model(images)
-	        _, predicted = torch.max(outputs.data, 1)
+	        # import pdb; pdb.set_trace()
+	        _, predicted = torch.max(torch.unsqueeze(outputs.data,0), 1)
 	        print([labels, predicted])
 	        total += labels.size(0)
 	        correct += (predicted == labels).sum().item()
 
-	print('Accuracy of the network on the 50 test images: %d %%' % (
+	print('Accuracy of the network on the 100 test images: %d %%' % (
 	    100 * correct / total))

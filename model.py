@@ -12,7 +12,8 @@ class Flatten(nn.Module):
         super(Flatten,self).__init__()
  
    def forward(self, x):
-        return x.view(x.size()[0], -1)
+        # return x.view(x.size()[0], -1)
+        return torch.flatten(x)
 
 class SpeechConv(nn.Module):
 	def __init__(self):

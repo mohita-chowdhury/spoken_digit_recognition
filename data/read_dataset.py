@@ -19,15 +19,20 @@ for fn in folder_name:
 
 	total_path = '/users/mohita/nfs1_mohita/ufonia/speech_rec_pytorch/data/'+ fn + '/'
 
-	for n in dir_numbers:
-		current_folder = total_path + str(n) + '/'
+	# for n in dir_numbers:
+	# 	current_folder = total_path + str(n) + '/'
 		
+	# 	if fn == 'train':
+	# 		for file in os.listdir(current_folder):
+	# 			train_list.append(file)
+	# 	else:
+	# 		for file in os.listdir(current_folder):
+	# 			test_list.append(file)
+	for file in os.listdir(total_path):
 		if fn == 'train':
-			for file in os.listdir(current_folder):
-				train_list.append(file)
+			train_list.append(file)
 		else:
-			for file in os.listdir(current_folder):
-				test_list.append(file)
+			test_list.append(file)
 
 partition = {}
 partition['train'] = train_list
@@ -43,10 +48,10 @@ for i in test_list:
 	labels[i] = label_this
 
 
-with open('/users/mohita/nfs1_mohita/ufonia/speech_rec_pytorch/data/partition.json', 'w') as fp:
+with open('/users/mohita/nfs1_mohita/ufonia/speech_rec_pytorch/data/partition_aug.json', 'w') as fp:
     json.dump(partition, fp)
 
-with open('/users/mohita/nfs1_mohita/ufonia/speech_rec_pytorch/data/labels.json', 'w') as fp:
+with open('/users/mohita/nfs1_mohita/ufonia/speech_rec_pytorch/data/labels_aug.json', 'w') as fp:
     json.dump(labels, fp)
 
 # import pdb; pdb.set_trace()
